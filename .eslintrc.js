@@ -6,6 +6,7 @@ module.exports = {
   },
   globals: {
     window: "readonly",
+    self: "readonly",
   },
   parser: "@typescript-eslint/parser",
   parserOptions: {
@@ -30,13 +31,7 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    "prettier",
-    "react",
-    "jsx-a11y",
-    "react-hooks",
-    "@typescript-eslint",
-  ],
+  plugins: ["prettier", "react", "jsx-a11y", "react-hooks", "@typescript-eslint"],
   rules: {
     "import/extensions": "off",
     "import/prefer-default-export": "off",
@@ -62,5 +57,6 @@ module.exports = {
     "no-nested-ternary": "off",
     "@typescript-eslint/ban-types": "warn",
     "no-unused-expressions": "off",
+    "no-restricted-globals": "off",
   },
 };

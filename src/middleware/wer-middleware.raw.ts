@@ -5,9 +5,9 @@
 /*  This will be converted into a lodash templ., any  */
 /*  external argument must be provided using it       */
 /* -------------------------------------------------- */
-(function() {
+(function(global) {
 
-  const injectionContext = this || window || {browser: null};
+  const injectionContext = this || global || {browser: null};
 
   (function() {
     `<%= polyfillSource %>`;
@@ -45,7 +45,7 @@
       switch (type) {
         case SIGN_RELOAD:
           logger("Detected Changes. Reloading...");
-          reloadPage && window.location.reload();
+          reloadPage && global.location?.reload();
           break;
         case SIGN_LOG:
           console.info(payload);
@@ -124,7 +124,7 @@
           logger("Detected Changes. Reloading...");
           // Always reload extension pages in the foreground when they change.
           // This option doesn't make sense otherwise
-          window.location.reload();
+          global.location?.reload();
           break;
 
         case SIGN_LOG:
@@ -139,10 +139,9 @@
 
   // ======================= Bootstraps the middleware =========================== //
   runtime.reload
-    // in MV3 background service workers don't have access to the DOM
-    ? (typeof window === 'undefined' || extension.getBackgroundPage() === window) ? backgroundWorker(new WebSocket(wsHost)) : extensionPageWorker()
-    : contentScriptWorker();
-})();
+      ? (global.importScripts || extension.getBackgroundPage() === global) ? backgroundWorker(new WebSocket(wsHost)) : extensionPageWorker()
+      : contentScriptWorker();
+})(typeof window === 'object' ? window : self);
 
 /* ----------------------------------------------- */
 /* End of Webpack Hot Extension Middleware  */
